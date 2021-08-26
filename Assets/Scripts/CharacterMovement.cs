@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
@@ -7,8 +5,11 @@ public class CharacterMovement : MonoBehaviour
     private Rigidbody rb;
     private Joystick joystick;
 
+    Vector3 myposition;
+
     private float zMovement;
     private float xMovement;
+    bool followPath = false;
 
     public float speed = 3.0f;
     // Start is called before the first frame update
@@ -18,13 +19,38 @@ public class CharacterMovement : MonoBehaviour
         joystick = FindObjectOfType<Joystick>();
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
-        xMovement = joystick.Horizontal;
-        zMovement = joystick.Vertical;
+        
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            Ray touchRayToPosition = Camera.main.ScreenPointToRay(new Vector3(touch.position.x, touch.position.y));
+            RaycastHit hit;
+            if (Physics.Raycast(touchRayToPosition, out hit))
+            {
+                myposition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+                followPath = true;
+            }
 
-        rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);
+        }
+        if (myposition == transform.position) followPath = false;
+        if (joystick.Direction != Vector2.zero)
+        {
+            followPath = false; 
+            xMovement = joystick.Horizontal;
+            zMovement = joystick.Vertical;
 
+            rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (followPath)
+        {
+            transform.position = Vector3.Lerp(transform.position, myposition, Time.deltaTime);
+        }
     }
 }
