@@ -27,8 +27,4 @@ public class CharacterMovement : MonoBehaviour
         rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);
 
     }
-    private void FixedUpdate()
-    {
-        Debug.Log(new Vector3(xMovement, 0, zMovement) * speed);
-    }
 }
