@@ -44,6 +44,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);//прикладываем силу в указанном направдении
         if (followPath)//если следуем пути
         {
             transform.position = Vector3.Lerp(transform.position, myposition, Time.deltaTime);//новая позиция из линейной интерполяции между текущей позицией и конечной
