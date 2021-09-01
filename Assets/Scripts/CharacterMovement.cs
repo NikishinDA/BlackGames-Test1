@@ -3,54 +3,50 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     private Rigidbody rb;
-    private Joystick joystick;
+    public Joystick joystick; //используемый джостик
 
     Vector3 myposition;
 
-    private float zMovement;
-    private float xMovement;
-    bool followPath = false;
+    private float zMovement; //направление по оси Z
+    private float xMovement;//направление по оси X
+    bool followPath = false;//перемещается ли по тапу?
 
-    public float speed = 3.0f;
-    // Start is called before the first frame update
+    public float speed = 3.0f;//скорость перемещения
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        joystick = FindObjectOfType<Joystick>();
     }
 
-    //Update is called once per frame
     void Update()
     {
         
-        if (Input.touchCount > 0)
+        if (Input.GetMouseButton(0))//если тап
         {
-            Touch touch = Input.GetTouch(0);
-            Ray touchRayToPosition = Camera.main.ScreenPointToRay(new Vector3(touch.position.x, touch.position.y));
+            Ray touchRayToPosition = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
             RaycastHit hit;
-            if (Physics.Raycast(touchRayToPosition, out hit))
+            if (Physics.Raycast(touchRayToPosition, out hit))//стреляем лучом
             {
-                myposition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+                myposition = new Vector3(hit.point.x, transform.position.y, hit.point.z);//позиция для передвижения получается из точки попадания луча в коллайдер
                 followPath = true;
             }
 
         }
-        if (myposition == transform.position) followPath = false;
-        if (joystick.Direction != Vector2.zero)
+        if (myposition == transform.position) followPath = false;//если прибыли в точку, то прекратить следовать пути
+        if (joystick.Direction != Vector2.zero)//если есть инпут с джойстика
         {
-            followPath = false; 
-            xMovement = joystick.Horizontal;
-            zMovement = joystick.Vertical;
+            followPath = false; //прекратить следовать пути
+            xMovement = joystick.Horizontal; //направление по оси x соответствует оси x джойстика
+            zMovement = joystick.Vertical; //направление по оси z соответствует оси y джойстика
 
-            rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);
+            rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);//прикладываем силу в указанном направдении
         }
     }
 
     private void FixedUpdate()
     {
-        if (followPath)
+        if (followPath)//если следуем пути
         {
-            transform.position = Vector3.Lerp(transform.position, myposition, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, myposition, Time.deltaTime);//новая позиция из линейной интерполяции между текущей позицией и конечной
         }
     }
 }
