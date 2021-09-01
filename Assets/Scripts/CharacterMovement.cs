@@ -1,17 +1,17 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
     private Rigidbody rb;
-    public Joystick joystick; //используемый джостик
+    public Joystick joystick; //РёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РґР¶РѕСЃС‚РёРє
 
     Vector3 myposition;
 
-    private float zMovement; //направление по оси Z
-    private float xMovement;//направление по оси X
-    bool followPath = false;//перемещается ли по тапу?
+    private float zMovement; //РЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕ РѕСЃРё Z
+    private float xMovement;//РЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕ РѕСЃРё X
+    bool followPath = false;//РїРµСЂРµРјРµС‰Р°РµС‚СЃСЏ Р»Рё РїРѕ С‚Р°РїСѓ?
 
-    public float speed = 3.0f;//скорость перемещения
+    public float speed = 3.0f;//СЃРєРѕСЂРѕСЃС‚СЊ РїРµСЂРµРјРµС‰РµРЅРёСЏ
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -20,34 +20,34 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetMouseButton(0))//если тап
+        if (Input.GetMouseButton(0))//РµСЃР»Рё С‚Р°Рї
         {
             Ray touchRayToPosition = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
             RaycastHit hit;
-            if (Physics.Raycast(touchRayToPosition, out hit))//стреляем лучом
+            if (Physics.Raycast(touchRayToPosition, out hit))//СЃС‚СЂРµР»СЏРµРј Р»СѓС‡РѕРј
             {
-                myposition = new Vector3(hit.point.x, transform.position.y, hit.point.z);//позиция для передвижения получается из точки попадания луча в коллайдер
+                myposition = new Vector3(hit.point.x, transform.position.y, hit.point.z);//РїРѕР·РёС†РёСЏ РґР»СЏ РїРµСЂРµРґРІРёР¶РµРЅРёСЏ РїРѕР»СѓС‡Р°РµС‚СЃСЏ РёР· С‚РѕС‡РєРё РїРѕРїР°РґР°РЅРёСЏ Р»СѓС‡Р° РІ РєРѕР»Р»Р°Р№РґРµСЂ
                 followPath = true;
             }
 
         }
-        if (myposition == transform.position) followPath = false;//если прибыли в точку, то прекратить следовать пути
-        if (joystick.Direction != Vector2.zero)//если есть инпут с джойстика
+        if (myposition == transform.position) followPath = false;//РµСЃР»Рё РїСЂРёР±С‹Р»Рё РІ С‚РѕС‡РєСѓ, С‚Рѕ РїСЂРµРєСЂР°С‚РёС‚СЊ СЃР»РµРґРѕРІР°С‚СЊ РїСѓС‚Рё
+        if (joystick.Direction != Vector2.zero)//РµСЃР»Рё РµСЃС‚СЊ РёРЅРїСѓС‚ СЃ РґР¶РѕР№СЃС‚РёРєР°
         {
-            followPath = false; //прекратить следовать пути
-            xMovement = joystick.Horizontal; //направление по оси x соответствует оси x джойстика
-            zMovement = joystick.Vertical; //направление по оси z соответствует оси y джойстика
+            followPath = false; //РїСЂРµРєСЂР°С‚РёС‚СЊ СЃР»РµРґРѕРІР°С‚СЊ РїСѓС‚Рё
+            xMovement = joystick.Horizontal; //РЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕ РѕСЃРё x СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РѕСЃРё x РґР¶РѕР№СЃС‚РёРєР°
+            zMovement = joystick.Vertical; //РЅР°РїСЂР°РІР»РµРЅРёРµ РїРѕ РѕСЃРё z СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РѕСЃРё y РґР¶РѕР№СЃС‚РёРєР°
 
-            rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);//прикладываем силу в указанном направдении
+            rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);//РїСЂРёРєР»Р°РґС‹РІР°РµРј СЃРёР»Сѓ РІ СѓРєР°Р·Р°РЅРЅРѕРј РЅР°РїСЂР°РІРґРµРЅРёРё
         }
     }
 
     private void FixedUpdate()
     {
-        rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);//прикладываем силу в указанном направдении
-        if (followPath)//если следуем пути
+        rb.AddRelativeForce(new Vector3(xMovement, 0, zMovement) * speed);//РїСЂРёРєР»Р°РґС‹РІР°РµРј СЃРёР»Сѓ РІ СѓРєР°Р·Р°РЅРЅРѕРј РЅР°РїСЂР°РІРґРµРЅРёРё
+        if (followPath)//РµСЃР»Рё СЃР»РµРґСѓРµРј РїСѓС‚Рё
         {
-            transform.position = Vector3.Lerp(transform.position, myposition, Time.deltaTime);//новая позиция из линейной интерполяции между текущей позицией и конечной
+            transform.position = Vector3.Lerp(transform.position, myposition, Time.deltaTime);//РЅРѕРІР°СЏ РїРѕР·РёС†РёСЏ РёР· Р»РёРЅРµР№РЅРѕР№ РёРЅС‚РµСЂРїРѕР»СЏС†РёРё РјРµР¶РґСѓ С‚РµРєСѓС‰РµР№ РїРѕР·РёС†РёРµР№ Рё РєРѕРЅРµС‡РЅРѕР№
         }
     }
 }

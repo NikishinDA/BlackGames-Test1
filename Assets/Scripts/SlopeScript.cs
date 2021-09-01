@@ -1,15 +1,15 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SlopeScript : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)//если объект входит в триггер, 
+    private void OnTriggerEnter(Collider other)//РµСЃР»Рё РѕР±СЉРµРєС‚ РІС…РѕРґРёС‚ РІ С‚СЂРёРіРіРµСЂ, 
     {
-        other.transform.up = gameObject.transform.up; //поменять направление нормали объекта на направиление нормали рампы
+        other.transform.up = gameObject.transform.up; //РїРѕРјРµРЅСЏС‚СЊ РЅР°РїСЂР°РІР»РµРЅРёРµ РЅРѕСЂРјР°Р»Рё РѕР±СЉРµРєС‚Р° РЅР° РЅР°РїСЂР°РІРёР»РµРЅРёРµ РЅРѕСЂРјР°Р»Рё СЂР°РјРїС‹
     }
-    private void OnTriggerExit(Collider other)//если объект выходит из триггера, 
+    private void OnTriggerExit(Collider other)//РµСЃР»Рё РѕР±СЉРµРєС‚ РІС‹С…РѕРґРёС‚ РёР· С‚СЂРёРіРіРµСЂР°, 
     {
-        other.transform.up = Vector3.up;//вернуть направление нормали
+        other.transform.up = Vector3.up;//РІРµСЂРЅСѓС‚СЊ РЅР°РїСЂР°РІР»РµРЅРёРµ РЅРѕСЂРјР°Р»Рё
     }
 }
